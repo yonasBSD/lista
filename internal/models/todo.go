@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"strings"
 )
 
 type Todo struct {
@@ -11,31 +12,35 @@ type Todo struct {
 }
 
 type TodoList struct {
-	todos  []Todo
-	nextID int
+	Todos  []Todo
+	NextID int
 }
 
 func NewTodoList() *TodoList {
 	return &TodoList{
-		todos:  make([]Todo, 0),
-		nextID: 1,
+		Todos:  make([]Todo, 0),
+		NextID: 1,
 	}
 }
 
-func (tl *TodoList) Add(text string) {
+func (tl *TodoList) Add(text string) error {
+	if strings.TrimSpace(text) == "" {
+		return fmt.Errorf("todo text cannot be empty")
+	}
 	todo := Todo{
-		ID:        tl.nextID,
+		ID:        tl.NextID,
 		Text:      text,
 		Completed: false,
 	}
-	tl.todos = append(tl.todos, todo)
-	tl.nextID++
+	tl.Todos = append(tl.Todos, todo)
+	tl.NextID++
+	return nil
 }
 
 func (tl *TodoList) Complete(id int) error {
-	for i, todo := range tl.todos {
+	for i, todo := range tl.Todos {
 		if todo.ID == id {
-			tl.todos[i].Completed = true
+			tl.Todos[i].Completed = true
 			return nil
 		}
 	}
@@ -43,15 +48,74 @@ func (tl *TodoList) Complete(id int) error {
 }
 
 func (tl *TodoList) List() []Todo {
-	return tl.todos
+	return tl.Todos
+}
+
+func (tl *TodoList) GetByID(id int) (*Todo, error) {
+	if len(tl.Todos) < 1 {
+		return &Todo{}, fmt.Errorf("No entrys in todo list")
+	}
+
+	for _, todo := range tl.Todos {
+		if todo.ID == id {
+			return &todo, nil
+		}
+	}
+	return &Todo{}, fmt.Errorf("Todo item with id %d not found", id)
 }
 
 func (tl *TodoList) Delete(id int) error {
-	for i, todo := range tl.todos {
+	for i, todo := range tl.Todos {
 		if todo.ID == id {
-			tl.todos = append(tl.todos[:i], tl.todos[i+1:]...)
+			tl.Todos = append(tl.Todos[:i], tl.Todos[i+1:]...)
 			return nil
 		}
 	}
 	return fmt.Errorf("todo with ID %d not found", id)
+}
+
+func (tl *TodoList) Count() int {
+	return len(tl.Todos)
+}
+
+func (tl *TodoList) GetPending() []Todo {
+	if tl.Count() < 1 {
+		return []Todo{}
+	}
+	result := []Todo{}
+
+	for _, todo := range tl.Todos {
+		if !todo.Completed {
+			result = append(result, todo)
+		}
+	}
+	return result
+}
+
+func (tl *TodoList) CountPending() int {
+	if tl.Count() < 1 {
+		return 0
+	}
+
+	count := 0
+	for _, todo := range tl.Todos {
+		if !todo.Completed {
+			count++
+		}
+	}
+	return count
+}
+
+func (tl *TodoList) GetCompleted() []Todo {
+	if tl.Count() < 1 {
+		return []Todo{}
+	}
+	result := []Todo{}
+
+	for _, todo := range tl.Todos {
+		if todo.Completed {
+			result = append(result, todo)
+		}
+	}
+	return result
 }
