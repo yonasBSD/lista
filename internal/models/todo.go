@@ -53,7 +53,7 @@ func (tl *TodoList) List() []Todo {
 
 func (tl *TodoList) GetByID(id int) (*Todo, error) {
 	if len(tl.Todos) < 1 {
-		return &Todo{}, fmt.Errorf("No entrys in todo list")
+		return nil, fmt.Errorf("No entries in todo list")
 	}
 
 	for _, todo := range tl.Todos {

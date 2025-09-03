@@ -1,0 +1,317 @@
+package models
+
+import (
+	"testing"
+)
+
+func TestNewTodoList(t *testing.T) {
+	tl := NewTodoList()
+
+	if tl == nil {
+		t.Fatal("NewTodoList() returned nil")
+	}
+
+	if len(tl.Todos) != 0 {
+		t.Errorf("Expected empty todo list, got %d todos", len(tl.Todos))
+	}
+
+	if tl.NextID != 1 {
+		t.Errorf("Expected NextID to be 1, got %d", tl.NextID)
+	}
+}
+
+func TestTodoList_Add(t *testing.T) {
+	tests := []struct {
+		name        string
+		text        string
+		expectError bool
+	}{
+		{"Valid todo", "Buy groceries", false},
+		{"Empty string", "", true},
+		{"Only spaces", "   ", true},
+		{"Valid with spaces", "  Buy milk  ", false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tl := NewTodoList()
+			err := tl.Add(tt.text)
+
+			if tt.expectError {
+				if err == nil {
+					t.Errorf("Expected error for input '%s', got nil", tt.text)
+				}
+				return
+			}
+
+			if err != nil {
+				t.Errorf("Unexpected error: %v", err)
+				return
+			}
+
+			if len(tl.Todos) != 1 {
+				t.Errorf("Expected 1 todo, got %d", len(tl.Todos))
+			}
+
+			todo := tl.Todos[0]
+			if todo.ID != 1 {
+				t.Errorf("Expected ID 1, got %d", todo.ID)
+			}
+
+			if todo.Text != tt.text {
+				t.Errorf("Expected text '%s', got '%s'", tt.text, todo.Text)
+			}
+
+			if todo.Completed {
+				t.Error("Expected todo to be incomplete")
+			}
+		})
+	}
+}
+
+func TestTodoList_Add_Multiple(t *testing.T) {
+	tl := NewTodoList()
+
+	tl.Add("First todo")
+	tl.Add("Second todo")
+	tl.Add("Third todo")
+
+	if len(tl.Todos) != 3 {
+		t.Errorf("Expected 3 todos, got %d", len(tl.Todos))
+	}
+
+	if tl.NextID != 4 {
+		t.Errorf("Expected NextID to be 4, got %d", tl.NextID)
+	}
+
+	// Check IDs are sequential
+	expectedIDs := []int{1, 2, 3}
+	for i, todo := range tl.Todos {
+		if todo.ID != expectedIDs[i] {
+			t.Errorf("Expected ID %d, got %d", expectedIDs[i], todo.ID)
+		}
+	}
+}
+
+func TestTodoList_Complete(t *testing.T) {
+	tl := NewTodoList()
+	tl.Add("Test todo")
+
+	// Test completing existing todo
+	err := tl.Complete(1)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+
+	if !tl.Todos[0].Completed {
+		t.Error("Expected todo to be completed")
+	}
+
+	// Test completing non-existent todo
+	err = tl.Complete(999)
+	if err == nil {
+		t.Error("Expected error when completing non-existent todo")
+	}
+}
+
+func TestTodoList_List(t *testing.T) {
+	tl := NewTodoList()
+	tl.Add("First todo")
+	tl.Add("Second todo")
+
+	todos := tl.List()
+
+	if len(todos) != 2 {
+		t.Errorf("Expected 2 todos, got %d", len(todos))
+	}
+
+	if todos[0].Text != "First todo" {
+		t.Errorf("Expected 'First todo', got '%s'", todos[0].Text)
+	}
+
+	if todos[1].Text != "Second todo" {
+		t.Errorf("Expected 'Second todo', got '%s'", todos[1].Text)
+	}
+}
+
+func TestTodoList_GetByID(t *testing.T) {
+	tl := NewTodoList()
+	tl.Add("Test todo")
+
+	// Test getting existing todo
+	todo, err := tl.GetByID(1)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+
+	if todo.ID != 1 {
+		t.Errorf("Expected ID 1, got %d", todo.ID)
+	}
+
+	if todo.Text != "Test todo" {
+		t.Errorf("Expected 'Test todo', got '%s'", todo.Text)
+	}
+
+	// Test getting non-existent todo
+	_, err = tl.GetByID(999)
+	if err == nil {
+		t.Error("Expected error when getting non-existent todo")
+	}
+
+	// Test empty list
+	emptyTl := NewTodoList()
+	_, err = emptyTl.GetByID(1)
+	if err == nil {
+		t.Error("Expected error when getting from empty list")
+	}
+}
+
+func TestTodoList_Delete(t *testing.T) {
+	tl := NewTodoList()
+	tl.Add("First todo")
+	tl.Add("Second todo")
+	tl.Add("Third todo")
+
+	// Delete middle item
+	err := tl.Delete(2)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+
+	if len(tl.Todos) != 2 {
+		t.Errorf("Expected 2 todos after deletion, got %d", len(tl.Todos))
+	}
+
+	// Verify correct items remain
+	todos := tl.List()
+	if todos[0].ID != 1 || todos[0].Text != "First todo" {
+		t.Error("First todo should remain")
+	}
+
+	if todos[1].ID != 3 || todos[1].Text != "Third todo" {
+		t.Error("Third todo should remain")
+	}
+
+	// Test deleting non-existent todo
+	err = tl.Delete(999)
+	if err == nil {
+		t.Error("Expected error when deleting non-existent todo")
+	}
+}
+
+func TestTodoList_Count(t *testing.T) {
+	tl := NewTodoList()
+
+	if tl.Count() != 0 {
+		t.Errorf("Expected count 0, got %d", tl.Count())
+	}
+
+	tl.Add("First todo")
+	if tl.Count() != 1 {
+		t.Errorf("Expected count 1, got %d", tl.Count())
+	}
+
+	tl.Add("Second todo")
+	if tl.Count() != 2 {
+		t.Errorf("Expected count 2, got %d", tl.Count())
+	}
+
+	tl.Delete(1)
+	if tl.Count() != 1 {
+		t.Errorf("Expected count 1 after deletion, got %d", tl.Count())
+	}
+}
+
+func TestTodoList_GetPending(t *testing.T) {
+	tl := NewTodoList()
+
+	// Test empty list
+	pending := tl.GetPending()
+	if len(pending) != 0 {
+		t.Errorf("Expected 0 pending todos, got %d", len(pending))
+	}
+
+	// Add todos
+	tl.Add("Pending todo 1")
+	tl.Add("Pending todo 2")
+	tl.Add("To be completed")
+
+	// Complete one todo
+	tl.Complete(3)
+
+	pending = tl.GetPending()
+	if len(pending) != 2 {
+		t.Errorf("Expected 2 pending todos, got %d", len(pending))
+	}
+
+	// Verify only incomplete todos are returned
+	for _, todo := range pending {
+		if todo.Completed {
+			t.Error("GetPending returned a completed todo")
+		}
+	}
+}
+
+func TestTodoList_CountPending(t *testing.T) {
+	tl := NewTodoList()
+
+	// Test empty list
+	if tl.CountPending() != 0 {
+		t.Errorf("Expected 0 pending todos, got %d", tl.CountPending())
+	}
+
+	// Add todos
+	tl.Add("Todo 1")
+	tl.Add("Todo 2")
+	tl.Add("Todo 3")
+
+	if tl.CountPending() != 3 {
+		t.Errorf("Expected 3 pending todos, got %d", tl.CountPending())
+	}
+
+	// Complete some todos
+	tl.Complete(1)
+	tl.Complete(2)
+
+	if tl.CountPending() != 1 {
+		t.Errorf("Expected 1 pending todo, got %d", tl.CountPending())
+	}
+}
+
+func TestTodoList_GetCompleted(t *testing.T) {
+	tl := NewTodoList()
+
+	// Test empty list
+	completed := tl.GetCompleted()
+	if len(completed) != 0 {
+		t.Errorf("Expected 0 completed todos, got %d", len(completed))
+	}
+
+	// Add and complete todos
+	tl.Add("Todo 1")
+	tl.Add("Todo 2")
+	tl.Add("Todo 3")
+
+	tl.Complete(1)
+	tl.Complete(3)
+
+	completed = tl.GetCompleted()
+	if len(completed) != 2 {
+		t.Errorf("Expected 2 completed todos, got %d", len(completed))
+	}
+
+	// Verify only completed todos are returned
+	for _, todo := range completed {
+		if !todo.Completed {
+			t.Error("GetCompleted returned an incomplete todo")
+		}
+	}
+
+	// Check specific IDs
+	expectedIDs := map[int]bool{1: true, 3: true}
+	for _, todo := range completed {
+		if !expectedIDs[todo.ID] {
+			t.Errorf("Unexpected completed todo ID: %d", todo.ID)
+		}
+	}
+}
