@@ -25,7 +25,7 @@ func SaveTodos(todos *models.TodoList, filename string) error {
 	encoder.SetIndent("", " ") //make json pretty
 	err = encoder.Encode(todos.Todos)
 	if err != nil {
-		return fmt.Errorf("Error enconding todos: %s", err)
+		return fmt.Errorf("Error encoding todos: %s", err)
 	}
 	fmt.Printf("Todos saved in %s\n", filename)
 	return nil
