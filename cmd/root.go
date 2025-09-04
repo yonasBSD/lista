@@ -42,7 +42,7 @@ var rootCmd = &cobra.Command{
 	Short: "A minimal todo CLI in Go",
 	Long:  `lista is a simple and aesthetic CLI app to manage your todos on the terminal.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Welcome to addCmdaddCmdtodo-cli! Use 'todo-cli help' to see available commands.")
+		fmt.Println("Welcome to lista! Use 'lista help' to see available commands.")
 	},
 }
 
