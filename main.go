@@ -1,7 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/kwame-Owusu/todo-cli/internal/models"
+)
 
 func main() {
-	fmt.Println("Hello World!")
+	todos := models.NewTodoList()
+	todos.Add("This is first Todo")
+	fmt.Println(todos.List())
 }
