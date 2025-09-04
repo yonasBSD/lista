@@ -13,5 +13,11 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error saving todos in main, %s", err)
 	}
-	fmt.Println(todos.List())
+
+	loadedTodos, err := storage.LoadTodos("test.json")
+	if err != nil {
+		fmt.Printf("Error loading todos in main, %s", err)
+	}
+
+	fmt.Println(loadedTodos[0].Text)
 }

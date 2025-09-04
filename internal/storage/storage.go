@@ -31,6 +31,20 @@ func SaveTodos(todos *models.TodoList, filename string) error {
 	return nil
 }
 
-func LoadTodos(filename string) error {
-	return nil
+func LoadTodos(filename string) ([]models.Todo, error) {
+	if !strings.HasSuffix(filename, ".json") {
+		return nil, fmt.Errorf("Invalid filename, file has to end in .json")
+	}
+
+	var todos []models.Todo
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		return nil, fmt.Errorf("Error reading file, %s", err)
+	}
+	err = json.Unmarshal(data, &todos)
+	if err != nil {
+		return nil, fmt.Errorf("Error unmarshaling file, %s", err)
+	}
+
+	return todos, nil
 }
