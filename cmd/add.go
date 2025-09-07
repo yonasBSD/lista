@@ -9,13 +9,13 @@ import (
 
 var addCmd = &cobra.Command{
 	Use:   "add [description]",
-	Short: "Add a new task",
-	Long:  "Add a new task with description and optional priority (high, medium, low)",
+	Short: "Add a new Todo",
+	Long:  "Add a new todo with description and optional priority (high, medium, low)",
 	Args:  cobra.MinimumNArgs(1),
-	Run:   addTask,
+	Run:   addTodo,
 }
 
-func addTask(cmd *cobra.Command, args []string) {
+func addTodo(cmd *cobra.Command, args []string) {
 	description := strings.Join(args, " ")
 
 	err := todoList.Add(description)
