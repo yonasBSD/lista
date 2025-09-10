@@ -74,6 +74,16 @@ func (tl *TodoList) Delete(id int) error {
 	return fmt.Errorf("todo with ID %d not found", id)
 }
 
+func (tl *TodoList) Edit(id int, text string) error {
+	for i := range tl.Todos {
+		if tl.Todos[i].ID == id {
+			tl.Todos[i].Text = text
+			return nil
+		}
+	}
+	return fmt.Errorf("todo with ID %d not found", id)
+}
+
 func (tl *TodoList) Count() int {
 	return len(tl.Todos)
 }
