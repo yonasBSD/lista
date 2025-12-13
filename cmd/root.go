@@ -3,13 +3,13 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/kwame-Owusu/todo-cli/internal/models"
-	"github.com/kwame-Owusu/todo-cli/internal/storage"
+	"github.com/kwame-Owusu/lista/internal/models"
+	"github.com/kwame-Owusu/lista/internal/storage"
 	"github.com/spf13/cobra"
 )
 
 var todoList *models.TodoList
-var dataFile string = "todos.json" //will change to $HOME path and make it not se with .file.json
+var dataFile string = "todos.json" //will change to $HOME path and make it not see with .file.json
 
 func loadTodos() {
 	todos, err := storage.LoadTodos(dataFile)

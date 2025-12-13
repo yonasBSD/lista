@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/kwame-Owusu/todo-cli/internal/models"
+	"github.com/kwame-Owusu/lista/internal/models"
 )
 
 func SaveTodos(todos *models.TodoList, filename string) error {

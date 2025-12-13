@@ -1,4 +1,4 @@
-module github.com/kwame-Owusu/todo-cli
+module github.com/kwame-Owusu/lista
 
 go 1.24.1
 

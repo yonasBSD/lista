@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kwame-Owusu/todo-cli/internal/models"
+	"github.com/kwame-Owusu/lista/internal/models"
 )
 
 func createTestTodoList() *models.TodoList {
