@@ -8,8 +8,8 @@ import (
 
 var completeCmd = &cobra.Command{
 	Use:   "complete [ID]",
-	Short: "Complete a Todo",
-	Long:  "Complete a Todo in the the todo list and mark status as completed",
+	Short: "Complete a todo",
+	Long:  "Complete a todo in the the todo list and mark status as completed",
 	Args:  cobra.MinimumNArgs(1),
 	Run:   completeTodo,
 }

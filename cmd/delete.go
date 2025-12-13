@@ -8,8 +8,8 @@ import (
 
 var deleteCmd = &cobra.Command{
 	Use:   "delete [ID]",
-	Short: "Delete a Todo",
-	Long:  "Delete a Todo and remove it from the list",
+	Short: "Delete a todo",
+	Long:  "Delete a todo and remove it from the list",
 	Args:  cobra.MinimumNArgs(1),
 	Run:   deleteTodo,
 }

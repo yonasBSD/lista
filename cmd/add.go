@@ -9,7 +9,7 @@ import (
 
 var addCmd = &cobra.Command{
 	Use:   "add [description]",
-	Short: "Add a new Todo",
+	Short: "Add a new todo",
 	Long:  "Add a new todo with description and optional priority (high, medium, low)",
 	Args:  cobra.MinimumNArgs(1),
 	Run:   addTodo,
