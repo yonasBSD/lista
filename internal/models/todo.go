@@ -57,7 +57,7 @@ func NewTodoList() *TodoList {
 	}
 }
 
-func (tl *TodoList) Add(text string) error {
+func (tl *TodoList) Add(text string, priority Priority) error {
 	if strings.TrimSpace(text) == "" {
 		return fmt.Errorf("todo text cannot be empty")
 	}
@@ -65,7 +65,7 @@ func (tl *TodoList) Add(text string) error {
 		ID:        tl.NextID,
 		Text:      text,
 		Completed: false,
-		Priority:  Low,
+		Priority:  priority,
 	}
 	tl.Todos = append(tl.Todos, todo)
 	tl.NextID++
