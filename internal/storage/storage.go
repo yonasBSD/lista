@@ -27,7 +27,7 @@ func SaveTodos(todos *models.TodoList, filename string) error {
 	if err != nil {
 		return fmt.Errorf("Error encoding todos: %s", err)
 	}
-	fmt.Printf("Todos saved in %s\n", filename)
+	fmt.Println("Todos saved")
 	return nil
 }
 

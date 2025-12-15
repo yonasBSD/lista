@@ -10,21 +10,21 @@ import (
 
 var editCmd = &cobra.Command{
 	Use:   "edit [ID]",
-	Short: "edit the text of a todo",
-	Long:  "edit the text of a todo, given the correct ID",
+	Short: "edit the title of a todo",
+	Long:  "edit the title of a todo, given the correct ID",
 	Args:  cobra.MinimumNArgs(2),
-	Run:   editTodo,
+	Run:   editTodoTitle,
 }
 
-func editTodo(cmd *cobra.Command, args []string) {
+func editTodoTitle(cmd *cobra.Command, args []string) {
 	id, err := strconv.Atoi(args[0])
 	if err != nil {
 		fmt.Printf("Error occurred converting id to int: %s\n", err)
 	}
-	editText := strings.Join(args[1:], " ")
-	err = todoList.Edit(id, editText)
+	editTitle := strings.Join(args[1:], " ")
+	err = todoList.Edit(id, editTitle)
 	if err != nil {
-		fmt.Printf("Error editing todo with id: %d, and string: %s, %s\n", id, editText, err)
+		fmt.Printf("Error editing todo with id: %d, and string: %s, %s\n", id, editTitle, err)
 	}
 	saveTodos()
 }

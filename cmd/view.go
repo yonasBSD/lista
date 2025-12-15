@@ -8,10 +8,10 @@ import (
 )
 
 var viewCmd = &cobra.Command{
-	Use:   "view",
+	Use:   "view [id]",
 	Short: "view a todo",
 	Long:  "view a todo in its entirety, with notes if present",
-	Args:  cobra.MinimumNArgs(0),
+	Args:  cobra.MinimumNArgs(1),
 	Run:   viewTodo,
 }
 

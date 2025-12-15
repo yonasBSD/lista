@@ -41,5 +41,4 @@ func addTodo(cmd *cobra.Command, args []string) {
 	}
 
 	saveTodos()
-	fmt.Printf("Added: %s\n", title)
 }
