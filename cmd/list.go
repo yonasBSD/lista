@@ -28,18 +28,22 @@ func listTodos(cmd *cobra.Command, args []string) {
 		return todos[i].Priority > todos[j].Priority
 	})
 
-	fmt.Printf("%-4s %-10s %-10s %-50s\n", "ID", "STATUS", "PRIORITY", "DESCRIPTION")
-	fmt.Println(strings.Repeat("-", 90))
+	fmt.Printf("%-4s %-10s %-10s %-50s\n", "ID", "STATUS", "PRIORITY", "TITLE")
+	fmt.Println(strings.Repeat("-", 70))
 
 	for _, todo := range todos {
 		status := "PENDING"
+		title := todo.Title
 		if todo.Completed {
 			status = "DONE"
+		}
+		if len(todo.Notes) != 0 {
+			title = fmt.Sprintf("%v 🗒️", title)
 		}
 		fmt.Printf("%-4d %-10s %-10s %-50s\n",
 			todo.ID,
 			status,
 			todo.Priority,
-			todo.Title)
+			title)
 	}
 }

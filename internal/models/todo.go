@@ -25,13 +25,14 @@ func NewTodoList() *TodoList {
 	}
 }
 
-func (tl *TodoList) Add(title string, priority Priority) error {
+func (tl *TodoList) Add(title string, priority Priority, notes string) error {
 	if strings.TrimSpace(title) == "" {
 		return fmt.Errorf("todo title cannot be empty")
 	}
 	todo := Todo{
 		ID:        tl.NextID,
 		Title:     title,
+		Notes:     notes,
 		Completed: false,
 		Priority:  priority,
 	}
