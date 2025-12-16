@@ -10,8 +10,13 @@ func (m model) View() string {
 	var b strings.Builder
 
 	// Title with style
-	title := titleStyle.Render("✨ LISTA - Your CLI task manager")
-	b.WriteString(title + "\n\n")
+	title := titleStyle.Render(`
+	╔════════════════╗
+	║     LISTA      ║
+	╚════════════════╝
+    Your CLI todo manager
+`)
+	b.WriteString(title + "\n")
 
 	if m.err != nil {
 		errorMsg := errorStyle.
@@ -22,7 +27,7 @@ func (m model) View() string {
 	todos := m.todoList.List()
 
 	if len(todos) == 0 {
-		empty := itemStyle.Foreground(muted).Render("No todos yet. Add one to get started!")
+		empty := itemStyle.Render("No todos yet. Add one to get started!")
 		b.WriteString(empty + "\n")
 	}
 

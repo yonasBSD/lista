@@ -3,80 +3,88 @@ package tui
 import "github.com/charmbracelet/lipgloss"
 
 var (
-	primary   = lipgloss.Color("#A7AAE1") // purple
-	secondary = lipgloss.Color("#FFA4A4") // pink
-	success   = lipgloss.Color("#C1E59F") // green
-	warning   = lipgloss.Color("#FEEAC9") // amber
-	danger    = lipgloss.Color("#FD7980") // red
-	muted     = lipgloss.Color("#6B7280") // gray
-	text      = lipgloss.Color("#F9FAFB") // light text
+	// Background tones
+	bg1  = lipgloss.Color("#3c3836") // dark1 :contentReference[oaicite:4]{index=4}
+	gray = lipgloss.Color("#C5C7BC") // light gray
 
-	// Title style
+	// Foreground tones
+	fg      = lipgloss.Color("#ebdbb2") // light foreground
+	fgMuted = lipgloss.Color("#a89984") // muted foreground
+
+	// Accent colors (neutral)
+	red = lipgloss.Color("#cc241d")
+
+	// Bright accents
+	brightRed    = lipgloss.Color("#fb4934") // bright red :contentReference[oaicite:14]{index=14}
+	brightGreen  = lipgloss.Color("#b8bb26") // bright green :contentReference[oaicite:15]{index=15}
+	brightYellow = lipgloss.Color("#fabd2f") // bright yellow :contentReference[oaicite:16]{index=16}
+	brightBlue   = lipgloss.Color("#83a598") // bright blue :contentReference[oaicite:17]{index=17}
+	brightOrange = lipgloss.Color("#fe8019") // bright orange :contentReference[oaicite:20]{index=20}
+)
+
+var (
 	titleStyle = lipgloss.NewStyle().
-			Foreground(primary).
-			Padding(0, 1).
+			Foreground(brightYellow).
+			Bold(true).
 			MarginBottom(1)
 
 	modalStyle = lipgloss.NewStyle().
 			Border(lipgloss.RoundedBorder()).
+			BorderForeground(fgMuted).
+			Foreground(fg).
 			Padding(1, 3)
 
-	noteStyle = lipgloss.NewStyle().
-			Foreground(muted).
-			Italic(true)
-
-	// Selected item (cursor on it)
 	selectedStyle = lipgloss.NewStyle().
 			Bold(true).
-			Foreground(text).
-			Background(primary).
+			Foreground(gray).
+			Background(brightBlue).
 			Padding(0, 1)
 
+	// Completed + selected
 	completedSelectedStyle = lipgloss.NewStyle().
-				Bold(true).
-				Foreground(text).
-				Background(muted).
+				Foreground(fgMuted).
+				Background(bg1).
+				Strikethrough(true).
 				Padding(0, 1)
 
 	// Normal item
 	itemStyle = lipgloss.NewStyle().
-			Foreground(text).
+			Foreground(fg).
 			Padding(0, 1)
 
-	// Completed task
 	completedStyle = lipgloss.NewStyle().
-			Foreground(muted).
+			Foreground(fgMuted).
 			Strikethrough(true).
 			Padding(0, 1)
 
 	// Priority styles
 	highPriorityStyle = lipgloss.NewStyle().
-				Foreground(danger).
+				Foreground(brightRed).
 				Bold(true)
 
 	mediumPriorityStyle = lipgloss.NewStyle().
-				Foreground(warning).
+				Foreground(brightOrange).
 				Bold(true)
 
 	lowPriorityStyle = lipgloss.NewStyle().
-				Foreground(success)
+				Foreground(brightGreen)
 
-	// Help text at bottom
+	// Help text
 	helpStyle = lipgloss.NewStyle().
-			Foreground(muted).
+			Foreground(fgMuted).
 			MarginTop(1)
 
-	// Status indicators
+	// Cursor indicator
 	cursorStyle = lipgloss.NewStyle().
-			Foreground(secondary).
+			Foreground(brightYellow).
 			Bold(true)
 
+	// Error messages
 	errorStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#FF5555")).
+			Foreground(red).
 			Bold(true)
 )
 
-// Helper function to get priority style
 func getPriorityStyle(priority string) lipgloss.Style {
 	switch priority {
 	case "High":
