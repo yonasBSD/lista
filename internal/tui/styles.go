@@ -21,6 +21,10 @@ var (
 			Border(lipgloss.RoundedBorder()).
 			Padding(1, 3)
 
+	noteStyle = lipgloss.NewStyle().
+			Foreground(muted).
+			Italic(true)
+
 	// Selected item (cursor on it)
 	selectedStyle = lipgloss.NewStyle().
 			Bold(true).

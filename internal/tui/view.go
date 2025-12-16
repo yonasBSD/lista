@@ -41,11 +41,17 @@ func (m model) View() string {
 			checkbox = "✓"
 		}
 
+		noteIndicator := ""
+		if len(todo.Notes) > 0 {
+			noteIndicator = "󰈙"
+		}
+
 		content := fmt.Sprintf(
-			"%s %s [%s]",
+			"%s %s [%s] %s",
 			checkbox,
 			todo.Title,
 			todo.Priority,
+			noteIndicator,
 		)
 
 		// Priority badge
