@@ -11,8 +11,8 @@ import (
 
 func createTestTodoList() *models.TodoList {
 	tl := models.NewTodoList()
-	tl.Add("Buy groceries", models.Low)
-	tl.Add("Walk the dog", models.Low)
+	tl.Add("Buy groceries", models.Low, "")
+	tl.Add("Walk the dog", models.Low, "")
 	tl.Complete(2)
 	return tl
 }

@@ -62,5 +62,6 @@ func init() {
 	rootCmd.AddCommand(editCmd)
 	rootCmd.AddCommand(viewCmd)
 	rootCmd.AddCommand(addNotesCmd)
+	rootCmd.AddCommand(tuiCmd)
 	loadTodos()
 }

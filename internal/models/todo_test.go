@@ -35,7 +35,7 @@ func TestTodoList_Add(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			tl := NewTodoList()
-			err := tl.Add(tt.text, Low)
+			err := tl.Add(tt.text, Low, "")
 
 			if tt.expectError {
 				if err == nil {
@@ -72,9 +72,9 @@ func TestTodoList_Add(t *testing.T) {
 func TestTodoList_Add_Multiple(t *testing.T) {
 	tl := NewTodoList()
 
-	tl.Add("First todo", Low)
-	tl.Add("Second todo", Medium)
-	tl.Add("Third todo", High)
+	tl.Add("First todo", Low, "")
+	tl.Add("Second todo", Medium, "")
+	tl.Add("Third todo", High, "")
 
 	if len(tl.Todos) != 3 {
 		t.Errorf("Expected 3 todos, got %d", len(tl.Todos))
@@ -95,7 +95,7 @@ func TestTodoList_Add_Multiple(t *testing.T) {
 
 func TestTodoList_Complete(t *testing.T) {
 	tl := NewTodoList()
-	tl.Add("Test todo", Low)
+	tl.Add("Test todo", Low, "")
 
 	// Test completing existing todo
 	err := tl.Complete(1)
@@ -116,8 +116,8 @@ func TestTodoList_Complete(t *testing.T) {
 
 func TestTodoList_List(t *testing.T) {
 	tl := NewTodoList()
-	tl.Add("First todo", Low)
-	tl.Add("Second todo", Low)
+	tl.Add("First todo", Low, "")
+	tl.Add("Second todo", Low, "")
 
 	todos := tl.List()
 
@@ -136,7 +136,7 @@ func TestTodoList_List(t *testing.T) {
 
 func TestTodoList_GetByID(t *testing.T) {
 	tl := NewTodoList()
-	tl.Add("Test todo", Low)
+	tl.Add("Test todo", Low, "")
 
 	// Test getting existing todo
 	todo, err := tl.GetByID(1)
@@ -168,9 +168,9 @@ func TestTodoList_GetByID(t *testing.T) {
 
 func TestTodoList_Delete(t *testing.T) {
 	tl := NewTodoList()
-	tl.Add("First todo", Low)
-	tl.Add("Second todo", Low)
-	tl.Add("Third todo", Low)
+	tl.Add("First todo", Low, "")
+	tl.Add("Second todo", Low, "")
+	tl.Add("Third todo", Low, "")
 
 	// Delete middle item
 	err := tl.Delete(2)
@@ -206,12 +206,12 @@ func TestTodoList_Count(t *testing.T) {
 		t.Errorf("Expected count 0, got %d", tl.Count())
 	}
 
-	tl.Add("First todo", Low)
+	tl.Add("First todo", Low, "")
 	if tl.Count() != 1 {
 		t.Errorf("Expected count 1, got %d", tl.Count())
 	}
 
-	tl.Add("Second todo", Low)
+	tl.Add("Second todo", Low, "")
 	if tl.Count() != 2 {
 		t.Errorf("Expected count 2, got %d", tl.Count())
 	}
@@ -232,9 +232,9 @@ func TestTodoList_GetPending(t *testing.T) {
 	}
 
 	// Add todos
-	tl.Add("Pending todo 1", Low)
-	tl.Add("Pending todo 2", Low)
-	tl.Add("To be completed", Low)
+	tl.Add("Pending todo 1", Low, "")
+	tl.Add("Pending todo 2", Low, "")
+	tl.Add("To be completed", Low, "")
 
 	// Complete one todo
 	tl.Complete(3)
@@ -261,9 +261,9 @@ func TestTodoList_CountPending(t *testing.T) {
 	}
 
 	// Add todos
-	tl.Add("Todo 1", Low)
-	tl.Add("Todo 2", Low)
-	tl.Add("Todo 3", Low)
+	tl.Add("Todo 1", Low, "")
+	tl.Add("Todo 2", Low, "")
+	tl.Add("Todo 3", Low, "")
 
 	if tl.CountPending() != 3 {
 		t.Errorf("Expected 3 pending todos, got %d", tl.CountPending())
@@ -288,9 +288,9 @@ func TestTodoList_GetCompleted(t *testing.T) {
 	}
 
 	// Add and complete todos
-	tl.Add("Todo 1", Low)
-	tl.Add("Todo 2", Low)
-	tl.Add("Todo 3", Low)
+	tl.Add("Todo 1", Low, "")
+	tl.Add("Todo 2", Low, "")
+	tl.Add("Todo 3", Low, "")
 
 	tl.Complete(1)
 	tl.Complete(3)
