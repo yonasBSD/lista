@@ -9,7 +9,7 @@ import (
 
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "list todos",
+	Short: "List todos",
 	Long:  "List all todo tasks in the todo list",
 	Args:  cobra.MinimumNArgs(0),
 	Run:   listTodos,

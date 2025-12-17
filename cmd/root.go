@@ -2,10 +2,13 @@ package cmd
 
 import (
 	"fmt"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/kwame-Owusu/lista/internal/tui"
+	"github.com/spf13/cobra"
+	"os"
 
 	"github.com/kwame-Owusu/lista/internal/models"
 	"github.com/kwame-Owusu/lista/internal/storage"
-	"github.com/spf13/cobra"
 )
 
 var todoList *models.TodoList
@@ -39,18 +42,22 @@ func saveTodos() {
 
 var rootCmd = &cobra.Command{
 	Use:   "lista",
-	Short: "A minimal todo CLI in Go",
-	Long:  `lista is a simple and aesthetic CLI app to manage your todos on the terminal.`,
+	Short: "A minimal todo CLI program",
+	Long:  `Lista is a simple and aesthetic CLI app to manage your todos on the terminal.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Welcome to lista! Use 'lista help' to see available commands.")
+		m := tui.NewModel(todoList, dataFile)
+		p := tea.NewProgram(m)
+		if _, err := p.Run(); err != nil {
+			fmt.Printf("Error: %v\n", err)
+			os.Exit(1)
+		}
 	},
 }
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
-		// Exit with error code 1 if something goes wrong
-		// os.Exit(1)  // optional
+		os.Exit(1)
 	}
 }
 
@@ -62,6 +69,5 @@ func init() {
 	rootCmd.AddCommand(editCmd)
 	rootCmd.AddCommand(viewCmd)
 	rootCmd.AddCommand(addNotesCmd)
-	rootCmd.AddCommand(tuiCmd)
 	loadTodos()
 }

@@ -10,8 +10,8 @@ import (
 
 var addNotesCmd = &cobra.Command{
 	Use:   "notes [id]",
-	Short: "adds notes to a todo",
-	Long:  "adds notes to a todo, if not present. if present it appends to the existing note",
+	Short: "Adds notes to a todo",
+	Long:  "Adds notes to a todo, if not present. if present it appends to the existing note",
 	Args:  cobra.MinimumNArgs(1),
 	Run:   addNotes,
 }

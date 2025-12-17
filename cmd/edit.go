@@ -10,8 +10,8 @@ import (
 
 var editCmd = &cobra.Command{
 	Use:   "edit [ID]",
-	Short: "edit the title of a todo",
-	Long:  "edit the title of a todo, given the correct ID",
+	Short: "Edit the title of a todo",
+	Long:  "Edit the title of a todo, given the correct ID",
 	Args:  cobra.MinimumNArgs(2),
 	Run:   editTodoTitle,
 }
