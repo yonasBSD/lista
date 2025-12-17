@@ -87,7 +87,9 @@ func (m model) View() string {
 	}
 
 	if len(todos) != 0 {
-		taskCount := helpStyle.Render("\n0 of 3 complete")
+		completedCount := len(m.todoList.GetCompleted())
+		countString := fmt.Sprintf("%v of %v complete", completedCount, len(todos))
+		taskCount := helpStyle.Render(countString)
 		b.WriteString(taskCount)
 	}
 
