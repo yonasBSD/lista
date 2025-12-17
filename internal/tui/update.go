@@ -116,6 +116,7 @@ func (m model) updateAddForm(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	return m, cmd
 }
+
 func (m model) updateEditForm(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 
@@ -169,7 +170,6 @@ func (m model) updateEditForm(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
-// Helper methods
 func (m *model) startAddTodo() {
 	m.addingTodo = true
 	m.focusedField = fieldTitle

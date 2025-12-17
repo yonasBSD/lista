@@ -3,18 +3,37 @@ package cmd
 import (
 	"fmt"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/kwame-Owusu/lista/internal/config"
+	"github.com/kwame-Owusu/lista/internal/models"
+	"github.com/kwame-Owusu/lista/internal/storage"
 	"github.com/kwame-Owusu/lista/internal/tui"
 	"github.com/spf13/cobra"
 	"os"
-
-	"github.com/kwame-Owusu/lista/internal/models"
-	"github.com/kwame-Owusu/lista/internal/storage"
+	"path/filepath"
 )
 
 var todoList *models.TodoList
-var dataFile string = "todos.json" //will change to $HOME path and make it not see with .file.json
+var dataFile string //$HOME/.config/lista, where our json configs live
 
 func loadTodos() {
+	path, err := config.DataFilePath()
+	if err != nil {
+		fmt.Printf("Error resolving config path: %v\n", err)
+		os.Exit(1)
+	}
+	dataFile = path
+
+	// 0755 = rwx for owner, rx for group and others.
+	// This is the standard permission set for config directories:
+	// - Owner can read/write config files
+	// - Others can traverse the directory but not modify its contents
+	permissions := 0755
+
+	if err := os.MkdirAll(filepath.Dir(dataFile), os.FileMode(permissions)); err != nil {
+		fmt.Printf("Error creating config directory: %v\n", err)
+		os.Exit(1)
+	}
+
 	todos, err := storage.LoadTodos(dataFile)
 	if err != nil {
 		// File doesn't exist or error reading - create new TodoList
