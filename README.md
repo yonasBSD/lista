@@ -1,19 +1,36 @@
-# 🤔 What is this?
-This is a simple todo list with notes cli program, as the name suggests. It's simple to use but also pleasant to interact with, thanks to [bubbletea](https://github.com/charmbracelet/bubbletea).
-It has two modes, "normal" mode, where we can just pass our strings and command line flags to the program to accept our inputs. But it also as "TUI" mode, where you can keep engaging with the CLI
-program interactively.
+# 🤔 What is Lista?
+
+Lista is a simple CLI-based todo list application with support for notes.  
+As the name suggests, it’s intentionally minimal,  but also pleasant to use — thanks to
+[Bubble Tea](https://github.com/charmbracelet/bubbletea).
+
+Lista can be used in two ways:
+
+- **Normal mode** — where you interact with it using commands and flags
+- **TUI mode** — an interactive terminal UI that lets you manage your todos in real time
+
+Both modes are designed to be simple and fast to work with.
+
 
 # 🤔 Why Lista?
-Well, I made it for myself, because I found that when I am programming sometimes I like to take small notes here and there so I don't forget something, sometimes it might be just what to work on next,
-other times something pops up and I would like to remind myself. 
 
-I know there are other tools but, I have been going deep in the rabbit hole of NVIM + TMUX + BASH, so I want to make a program that I
-can call inside a TMUX session to act as a todo list, and Lista was born. nothing crazy; its a simple program that helps me, so why not share it with others who might be into or getting into terminals like I am.
+I built Lista primarily for myself.
+
+When I’m programming, I often need a lightweight way to jot down small notes — what to work on next, reminders, or ideas that pop up mid-flow. While there are plenty of existing tools, I’ve been going deep into the **Neovim + TMUX + Bash** workflow, and I wanted something that fit naturally into that environment. But also a way for me to practice my Go skills.
+
+Lista is meant to be:
+- Easy to invoke inside a TMUX session
+- Fast enough to not break focus
+- Simple enough to stay out of the way
+
+It’s nothing fancy — just a small tool that helps me stay organized. If it’s useful to others who enjoy the terminal like I do then even better.
+
 
  # 🔨 Installation
- you can install using homebrew, right now its pointing at my personal tap:
+You can install Lista using Homebrew. For now, it’s available via my personal tap:
  ```bash
   brew tap kwame-Owusu/lista
+  brew install lista
  ```
  # 🛠️ Development
  To build the project locally, you must:
