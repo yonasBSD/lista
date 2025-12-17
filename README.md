@@ -1,7 +1,7 @@
 # 🤔 What is Lista?
 
 Lista is a simple CLI-based todo list application with support for notes.  
-As the name suggests, it’s intentionally minimal, but also pleasant to use — thanks to
+As the name suggests, it’s intentionally minimal, but also pleasant to use, thanks to
 [Bubble Tea](https://github.com/charmbracelet/bubbletea).
 
 Lista can be used in two ways:
@@ -23,7 +23,7 @@ Lista is meant to be:
 - Fast enough to not break focus
 - Simple enough to stay out of the way
 
-It’s nothing fancy — just a small tool that helps me stay organized. If it’s useful to others who enjoy the terminal like I do then even better.
+It’s nothing fancy, just a small tool that helps me stay organized. If it’s useful to others who enjoy the terminal like I do then even better.
 
 # 🔨 Installation
 
