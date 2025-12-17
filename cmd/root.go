@@ -31,7 +31,7 @@ func loadTodos() {
 }
 
 func saveTodos() {
-	err := storage.SaveTodos(todoList, dataFile)
+	err := storage.SaveTodos(todoList.Todos, dataFile)
 	if err != nil {
 		fmt.Printf("Error saving todos: %v\n", err)
 	}

@@ -86,6 +86,11 @@ func (m model) View() string {
 		b.WriteString(line + "\n")
 	}
 
+	if len(todos) != 0 {
+		taskCount := helpStyle.Render("\n0 of 3 complete")
+		b.WriteString(taskCount)
+	}
+
 	// Help text
 	help := helpStyle.Render("\n↑/↓: navigate • space: toggle • a: add • d: delete • e: edit • q: quit")
 	b.WriteString(help)

@@ -14,7 +14,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if err != nil {
 				m.err = err
 			} else {
-				_ = storage.SaveTodos(m.todoList, m.filename)
+				_ = storage.SaveTodos(m.todoList.Todos, m.filename)
 			}
 
 			m.confirmDelete = false
@@ -52,7 +52,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 
 				// Save to file
-				if err := storage.SaveTodos(m.todoList, m.filename); err != nil {
+				if err := storage.SaveTodos(m.todoList.Todos, m.filename); err != nil {
 					m.err = err
 				}
 

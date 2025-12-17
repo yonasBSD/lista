@@ -9,40 +9,40 @@ import (
 	"github.com/kwame-Owusu/lista/internal/models"
 )
 
-func SaveTodos(todos *models.TodoList, filename string) error {
+func SaveTodos(todos []models.Todo, filename string) error {
 	if !strings.HasSuffix(filename, ".json") {
-		return fmt.Errorf("Invalid filename, file has to end in .json")
+		return fmt.Errorf("invalid filename: must end with .json")
 	}
 
 	file, err := os.Create(filename)
 	if err != nil {
-		return fmt.Errorf("Error occurred creating file: %s", err)
+		return fmt.Errorf("creating file: %w", err)
 	}
 	defer file.Close()
 
-	// write to json
 	encoder := json.NewEncoder(file)
-	encoder.SetIndent("", " ") //make json pretty
-	err = encoder.Encode(todos.Todos)
-	if err != nil {
-		return fmt.Errorf("Error encoding todos: %s", err)
+	encoder.SetIndent("", "  ")
+
+	if err := encoder.Encode(todos); err != nil {
+		return fmt.Errorf("encoding todos: %w", err)
 	}
+
 	return nil
 }
 
 func LoadTodos(filename string) ([]models.Todo, error) {
 	if !strings.HasSuffix(filename, ".json") {
-		return nil, fmt.Errorf("Invalid filename, file has to end in .json")
+		return nil, fmt.Errorf("invalid filename: must end with .json")
+	}
+
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		return nil, fmt.Errorf("reading file: %w", err)
 	}
 
 	var todos []models.Todo
-	data, err := os.ReadFile(filename)
-	if err != nil {
-		return nil, fmt.Errorf("Error reading file, %s", err)
-	}
-	err = json.Unmarshal(data, &todos)
-	if err != nil {
-		return nil, fmt.Errorf("Error unmarshaling file, %s", err)
+	if err := json.Unmarshal(data, &todos); err != nil {
+		return nil, fmt.Errorf("unmarshaling todos: %w", err)
 	}
 
 	return todos, nil
