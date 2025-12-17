@@ -13,8 +13,12 @@ func (m model) View() string {
 		return m.renderDeleteModal()
 	}
 
-	if m.editingTodo {
+	if m.addingTodo {
 		return m.renderAddForm()
+	}
+
+	if m.editingTodo {
+		return m.renderEditForm()
 	}
 
 	var b strings.Builder

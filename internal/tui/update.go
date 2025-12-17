@@ -99,10 +99,10 @@ func (m model) updateAddForm(msg tea.Msg) (tea.Model, tea.Cmd) {
 				break
 			}
 			// update todo if not in notes or use ctrl+s
-			return m, m.updateTodo()
+			return m, m.submitNewTodo()
 
 		case "ctrl+s":
-			return m, m.updateTodo()
+			return m, m.submitNewTodo()
 		}
 	}
 
@@ -151,10 +151,10 @@ func (m model) updateEditForm(msg tea.Msg) (tea.Model, tea.Cmd) {
 				break
 			}
 			// Submit form if not in notes or use ctrl+s
-			return m, m.submitNewTodo()
+			return m, m.updateTodo()
 
 		case "ctrl+s":
-			return m, m.submitNewTodo()
+			return m, m.updateTodo()
 		}
 	}
 
