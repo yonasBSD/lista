@@ -21,6 +21,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m.updateAddForm(msg)
 	}
 
+	if m.editingTodo {
+		return m.updateEditForm(msg) // new update function to perform editing
+	}
+
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
@@ -42,6 +46,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.confirmDeleteAtCursor()
 		case "a":
 			m.startAddTodo()
+		case "e":
+			m.startEditTodo()
 		}
 
 	case msgTodoSaved:
@@ -66,6 +72,58 @@ func (m model) updateAddForm(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch msg.String() {
 		case "esc":
 			m.cancelAddTodo()
+			return m, nil
+
+		case "ctrl+c":
+			return m, tea.Quit
+
+		case "tab", "shift+tab":
+			m.cycleFocusedField(msg.String() == "shift+tab")
+			return m, nil
+
+		case "left":
+			if m.focusedField == fieldPriority {
+				m.cyclePriority(true) // cycle up
+				return m, nil
+			}
+
+		case "right":
+			if m.focusedField == fieldPriority {
+				m.cyclePriority(false) // cycle down
+				return m, nil
+			}
+
+		case "enter":
+			if m.focusedField == fieldNotes {
+				// Allow enter in notes field for newlines
+				break
+			}
+			// update todo if not in notes or use ctrl+s
+			return m, m.updateTodo()
+
+		case "ctrl+s":
+			return m, m.updateTodo()
+		}
+	}
+
+	// Update the focused input field
+	switch m.focusedField {
+	case fieldTitle:
+		m.titleInput, cmd = m.titleInput.Update(msg)
+	case fieldNotes:
+		m.notesInput, cmd = m.notesInput.Update(msg)
+	}
+
+	return m, cmd
+}
+func (m model) updateEditForm(msg tea.Msg) (tea.Model, tea.Cmd) {
+	var cmd tea.Cmd
+
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch msg.String() {
+		case "esc":
+			m.cancelEditTodo()
 			return m, nil
 
 		case "ctrl+c":
@@ -122,8 +180,43 @@ func (m *model) startAddTodo() {
 	m.notesInput.Blur()
 }
 
+func (m *model) startEditTodo() {
+	todos := m.todoList.List()
+	if len(todos) == 0 || m.cursor >= len(todos) {
+		return
+	}
+
+	todo := todos[m.cursor]
+
+	m.editingTodo = true
+	m.editingID = todo.ID
+	m.focusedField = fieldTitle
+
+	m.titleInput.SetValue(todo.Title)
+	m.notesInput.SetValue(todo.Notes)
+
+	switch todo.Priority {
+	case models.Low:
+		m.priorityIndex = 0
+	case models.Medium:
+		m.priorityIndex = 1
+	case models.High:
+		m.priorityIndex = 2
+	}
+
+	m.titleInput.Focus()
+	m.notesInput.Blur()
+}
+
 func (m *model) cancelAddTodo() {
 	m.addingTodo = false
+	m.titleInput.Blur()
+	m.notesInput.Blur()
+}
+
+func (m *model) cancelEditTodo() {
+	m.editingTodo = false
+	m.editingID = 0
 	m.titleInput.Blur()
 	m.notesInput.Blur()
 }
@@ -181,6 +274,36 @@ func (m *model) submitNewTodo() tea.Cmd {
 	}
 
 	m.cancelAddTodo()
+	return m.saveTodosCmd()
+}
+
+func (m *model) updateTodo() tea.Cmd {
+	title := strings.TrimSpace(m.titleInput.Value())
+	if title == "" {
+		m.err = errors.New("Empty Title, cannot have empty title.")
+		return nil
+	}
+
+	notes := strings.TrimSpace(m.notesInput.Value())
+
+	// Convert priorityIndex to Priority
+	var priority models.Priority
+	switch m.priorityIndex {
+	case 0:
+		priority = models.Low
+	case 1:
+		priority = models.Medium
+	case 2:
+		priority = models.High
+	}
+
+	err := m.todoList.Update(m.editingID, title, priority, notes)
+	if err != nil {
+		m.err = err
+		return nil
+	}
+
+	m.cancelEditTodo()
 	return m.saveTodosCmd()
 }
 

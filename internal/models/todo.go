@@ -41,6 +41,19 @@ func (tl *TodoList) Add(title string, priority Priority, notes string) error {
 	return nil
 }
 
+func (tl *TodoList) Update(id int, title string, priority Priority, notes string) error {
+	todo, err := tl.GetByID(id)
+	if err != nil {
+		return err
+	}
+
+	todo.Title = title
+	todo.Priority = priority
+	todo.Notes = notes
+
+	return nil
+}
+
 func (tl *TodoList) Complete(id int) error {
 	for i, todo := range tl.Todos {
 		if todo.ID == id {

@@ -32,6 +32,10 @@ type model struct {
 	titleInput    textinput.Model
 	notesInput    textarea.Model
 	priorityIndex int // 0=Low, 1=Medium, 2=High
+
+	// editing state
+	editingTodo bool
+	editingID   int
 }
 
 func NewModel(todoList *models.TodoList, filename string) model {
