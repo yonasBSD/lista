@@ -3,6 +3,10 @@ package cmd
 import (
 	"fmt"
 	"strconv"
+	"strings"
+
+	"github.com/kwame-Owusu/lista/internal/models"
+	"github.com/kwame-Owusu/lista/internal/tui"
 
 	"github.com/spf13/cobra"
 )
@@ -18,22 +22,54 @@ var viewCmd = &cobra.Command{
 func viewTodo(cmd *cobra.Command, args []string) {
 	id, err := strconv.Atoi(args[0])
 	if err != nil {
-		fmt.Printf("Error converting id to int: %v", err)
+		fmt.Println(tui.RenderError("Invalid todo ID"))
 		return
 	}
 
-	todos := todoList.List()
-
-	for _, todo := range todos {
-		if id == todo.ID {
-			fmt.Printf("ID: %v\n", todo.ID)
-			fmt.Printf("Title: %v\n", todo.Title)
-			fmt.Printf("Priority: %v\n", todo.Priority)
-			fmt.Printf("Status: %v\n", todo.Completed)
-			fmt.Printf("Notes: \n%v\n", todo.Notes)
-			return
-		}
+	todo, err := todoList.GetByID(id)
+	if err != nil {
+		fmt.Println(
+			tui.RenderError(fmt.Sprintf("No todo with ID %d exists", id)),
+		)
+		return
 	}
 
-	fmt.Printf("No todo with ID %v exists\n", id)
+	renderViewText(todo)
+}
+
+func renderViewText(todo *models.Todo) {
+	fmt.Println(tui.RenderSectionTitle("Todo Details"))
+
+	fmt.Println(
+		tui.RenderLabel("ID:"),
+		tui.RenderValue(fmt.Sprint(todo.ID)),
+	)
+
+	fmt.Println(
+		tui.RenderLabel("Title:"),
+		tui.RenderTodoTitle(todo.Title, todo.Completed),
+	)
+
+	fmt.Println(
+		tui.RenderLabel("Priority:"),
+		tui.RenderPriority(todo.Priority.String()),
+	)
+
+	fmt.Println(
+		tui.RenderLabel("Status:"),
+		tui.RenderStatus(todo.Completed),
+	)
+
+	fmt.Println(
+		tui.RenderLabel("Notes:"),
+	)
+
+	if strings.TrimSpace(todo.Notes) == "" {
+		fmt.Println(tui.RenderMuted("  (none)"))
+	} else {
+		// Indent notes block for readability
+		for _, line := range strings.Split(todo.Notes, "\n") {
+			fmt.Println("  " + tui.RenderValue(line))
+		}
+	}
 }

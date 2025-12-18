@@ -21,6 +21,18 @@ func RenderHeader(s string) string {
 	return headerStyle.PaddingRight(2).Render(s)
 }
 
+func RenderLabel(s string) string {
+	return headerStyle.Render(s)
+}
+
+func RenderSectionTitle(s string) string {
+	return titleStyle.Render(s)
+}
+
+func RenderValue(s string) string {
+	return normalText.Render(s)
+}
+
 func RenderTodoTitle(title string, completed bool) string {
 	if completed {
 		return completedText.PaddingRight(3).Render(title)
