@@ -120,6 +120,36 @@ func InitStyles(theme config.Theme) {
 	errorStyle = lipgloss.NewStyle().
 		Foreground(errorCol).
 		Bold(true)
+
+	//  CLI styles
+	headerStyle = lipgloss.NewStyle().
+		Foreground(fgMain).
+		Bold(true)
+
+	highPriorityText = lipgloss.NewStyle().
+		Foreground(priorityHigh).
+		Bold(true)
+
+	mediumPriorityText = lipgloss.NewStyle().
+		Foreground(priorityMedium).
+		Bold(true)
+
+	lowPriorityText = lipgloss.NewStyle().
+		Foreground(priorityLow)
+
+	completedText = lipgloss.NewStyle().
+		Foreground(fgMuted).
+		Strikethrough(true)
+
+	pendingText = lipgloss.NewStyle().
+		Foreground(infoCol).
+		Bold(true)
+
+	mutedText = lipgloss.NewStyle().
+		Foreground(fgMuted)
+
+	normalText = lipgloss.NewStyle().
+		Foreground(fgMain)
 }
 
 func GetPriorityStyle(priority string) lipgloss.Style {
