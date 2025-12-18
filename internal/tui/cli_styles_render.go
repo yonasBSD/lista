@@ -62,6 +62,6 @@ func RenderPriority(priority string) string {
 	case "Medium":
 		return mediumPriorityText.PaddingRight(3).Render("Medium")
 	default:
-		return lowPriorityText.PaddingRight(3).Render("Low")
+		return lowPriorityText.PaddingRight(6).Render("Low")
 	}
 }

@@ -56,8 +56,8 @@ func (tl *TodoList) Update(id int, title string, priority Priority, notes string
 }
 
 func (tl *TodoList) Complete(id int) error {
-	for i, todo := range tl.Todos {
-		if todo.ID == id {
+	for i := range tl.Todos {
+		if tl.Todos[i].ID == id {
 			tl.Todos[i].Completed = true
 			return nil
 		}
@@ -66,7 +66,9 @@ func (tl *TodoList) Complete(id int) error {
 }
 
 func (tl *TodoList) List() []Todo {
-	return tl.Todos
+	result := make([]Todo, len(tl.Todos))
+	copy(result, tl.Todos)
+	return result
 }
 
 func (tl *TodoList) GetByID(id int) (*Todo, error) {
@@ -136,9 +138,6 @@ func (tl *TodoList) CountPending() int {
 }
 
 func (tl *TodoList) GetCompleted() []Todo {
-	if tl.Count() < 1 {
-		return []Todo{}
-	}
 	result := []Todo{}
 
 	for _, todo := range tl.Todos {
