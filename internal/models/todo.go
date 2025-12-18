@@ -70,16 +70,17 @@ func (tl *TodoList) List() []Todo {
 }
 
 func (tl *TodoList) GetByID(id int) (*Todo, error) {
-	if len(tl.Todos) < 1 {
-		return nil, fmt.Errorf("No entries in todo list")
+	if len(tl.Todos) == 0 {
+		return nil, fmt.Errorf("no entries in todo list")
 	}
 
-	for _, todo := range tl.Todos {
-		if todo.ID == id {
-			return &todo, nil
+	for i := range tl.Todos {
+		if tl.Todos[i].ID == id {
+			return &tl.Todos[i], nil
 		}
 	}
-	return &Todo{}, fmt.Errorf("Todo item with id %d not found", id)
+
+	return nil, fmt.Errorf("todo item with id %d not found", id)
 }
 
 func (tl *TodoList) Delete(id int) error {

@@ -23,19 +23,21 @@ func addNotes(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	todos := todoList.List()
+	todo, err := todoList.GetByID(id)
+	if err != nil {
+		fmt.Printf("No todo with ID %d exists", id)
+		return
+	}
 	newNotes := strings.Join(args[1:], " ")
 
-	for i := range todos {
-		if todos[i].ID == id {
-			if todos[i].Notes != "" {
-				todos[i].Notes += " " + newNotes
-			} else {
-				todos[i].Notes = newNotes
-			}
-			saveTodos()
-			return
+	if todo.ID == id {
+		if todo.Notes != "" {
+			todo.Notes += " " + newNotes
+		} else {
+			todo.Notes = newNotes
 		}
+		saveTodos()
+		return
 	}
 	fmt.Printf("No todo with ID %v exists\n", id)
 }
