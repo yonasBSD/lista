@@ -1,6 +1,9 @@
 package tui
 
-import "github.com/charmbracelet/lipgloss"
+import (
+	"github.com/charmbracelet/lipgloss"
+	"github.com/kwame-Owusu/lista/internal/config"
+)
 
 var (
 	// Background tones

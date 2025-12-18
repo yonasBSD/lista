@@ -38,7 +38,7 @@ func listTodos(cmd *cobra.Command, args []string) {
 			status = "DONE"
 		}
 		if len(todo.Notes) != 0 {
-			title = fmt.Sprintf("%v 🗒️", title)
+			title = fmt.Sprintf("%v 󰈙", title)
 		}
 		fmt.Printf("%-4d %-10s %-10s %-50s\n",
 			todo.ID,
