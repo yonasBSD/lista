@@ -89,4 +89,13 @@ func init() {
 	rootCmd.AddCommand(viewCmd)
 	rootCmd.AddCommand(addNotesCmd)
 	loadTodos()
+
+	// Load config
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		fmt.Printf("Error loading config: %v, using defaults\n", err)
+		cfg = &config.Config{Theme: config.DefaultTheme()}
+	}
+
+	tui.InitStyles(cfg.Theme)
 }

@@ -5,90 +5,124 @@ import (
 	"github.com/kwame-Owusu/lista/internal/config"
 )
 
+// Semantic colors derived from theme
 var (
-	// Background tones
-	bg1  = lipgloss.Color("#3c3836") // dark1 :contentReference[oaicite:4]{index=4}
-	gray = lipgloss.Color("#C5C7BC") // light gray
+	bgMain  lipgloss.Color
+	bgAlt   lipgloss.Color
+	fgMain  lipgloss.Color
+	fgMuted lipgloss.Color
+	border  lipgloss.Color
 
-	// Foreground tones
-	fg      = lipgloss.Color("#ebdbb2") // light foreground
-	fgMuted = lipgloss.Color("#a89984") // muted foreground
+	errorCol   lipgloss.Color
+	warningCol lipgloss.Color
+	successCol lipgloss.Color
+	infoCol    lipgloss.Color
 
-	// Accent colors (neutral)
-	red = lipgloss.Color("#cc241d")
+	priorityHigh   lipgloss.Color
+	priorityMedium lipgloss.Color
+	priorityLow    lipgloss.Color
 
-	// Bright accents
-	brightRed    = lipgloss.Color("#fb4934") // bright red :contentReference[oaicite:14]{index=14}
-	brightGreen  = lipgloss.Color("#b8bb26") // bright green :contentReference[oaicite:15]{index=15}
-	brightYellow = lipgloss.Color("#fabd2f") // bright yellow :contentReference[oaicite:16]{index=16}
-	brightBlue   = lipgloss.Color("#83a598") // bright blue :contentReference[oaicite:17]{index=17}
-	brightOrange = lipgloss.Color("#fe8019") // bright orange :contentReference[oaicite:20]{index=20}
+	accentPrimary   lipgloss.Color
+	accentSecondary lipgloss.Color
 )
 
+// Styles
 var (
+	titleStyle             lipgloss.Style
+	modalStyle             lipgloss.Style
+	selectedStyle          lipgloss.Style
+	itemStyle              lipgloss.Style
+	completedStyle         lipgloss.Style
+	completedSelectedStyle lipgloss.Style
+	highPriorityStyle      lipgloss.Style
+	mediumPriorityStyle    lipgloss.Style
+	lowPriorityStyle       lipgloss.Style
+	helpStyle              lipgloss.Style
+	cursorStyle            lipgloss.Style
+	errorStyle             lipgloss.Style
+)
+
+func InitStyles(theme config.Theme) {
+	//  Color mapping
+	bgMain = lipgloss.Color(theme.Background)
+	bgAlt = lipgloss.Color(theme.BackgroundAlt)
+
+	fgMain = lipgloss.Color(theme.TextPrimary)
+	fgMuted = lipgloss.Color(theme.TextMuted)
+	border = lipgloss.Color(theme.Border)
+
+	errorCol = lipgloss.Color(theme.Error)
+	warningCol = lipgloss.Color(theme.Warning)
+	successCol = lipgloss.Color(theme.Success)
+	infoCol = lipgloss.Color(theme.Info)
+
+	priorityHigh = lipgloss.Color(theme.PriorityHigh)
+	priorityMedium = lipgloss.Color(theme.PriorityMedium)
+	priorityLow = lipgloss.Color(theme.PriorityLow)
+
+	accentPrimary = lipgloss.Color(theme.Accent)
+	accentSecondary = lipgloss.Color(theme.AccentSecondary)
+
+	//  Styles
+
 	titleStyle = lipgloss.NewStyle().
-			Foreground(brightYellow).
-			Bold(true).
-			MarginBottom(1)
+		Foreground(accentPrimary).
+		Bold(true).
+		MarginBottom(1)
 
 	modalStyle = lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(fgMuted).
-			Foreground(fg).
-			Padding(1, 3)
+		Background(bgAlt).
+		Foreground(fgMain).
+		Border(lipgloss.RoundedBorder()).
+		BorderForeground(border).
+		Padding(1, 3)
+
+	itemStyle = lipgloss.NewStyle().
+		Foreground(fgMain).
+		Padding(0, 1)
 
 	selectedStyle = lipgloss.NewStyle().
-			Bold(true).
-			Foreground(gray).
-			Background(brightBlue).
-			Padding(0, 1)
-
-	// Completed + selected
-	completedSelectedStyle = lipgloss.NewStyle().
-				Foreground(fgMuted).
-				Background(bg1).
-				Strikethrough(true).
-				Padding(0, 1)
-
-	// Normal item
-	itemStyle = lipgloss.NewStyle().
-			Foreground(fg).
-			Padding(0, 1)
+		Foreground(bgMain).
+		Background(accentSecondary).
+		Bold(true).
+		Padding(0, 1)
 
 	completedStyle = lipgloss.NewStyle().
-			Foreground(fgMuted).
-			Strikethrough(true).
-			Padding(0, 1)
+		Foreground(fgMuted).
+		Strikethrough(true).
+		Padding(0, 1)
 
-	// Priority styles
+	completedSelectedStyle = lipgloss.NewStyle().
+		Foreground(fgMuted).
+		Background(bgMain).
+		Strikethrough(true).
+		Padding(0, 1)
+
 	highPriorityStyle = lipgloss.NewStyle().
-				Foreground(brightRed).
-				Bold(true)
+		Foreground(priorityHigh).
+		Bold(true)
 
 	mediumPriorityStyle = lipgloss.NewStyle().
-				Foreground(brightOrange).
-				Bold(true)
+		Foreground(priorityMedium).
+		Bold(true)
 
 	lowPriorityStyle = lipgloss.NewStyle().
-				Foreground(brightGreen)
+		Foreground(priorityLow)
 
-	// Help text
 	helpStyle = lipgloss.NewStyle().
-			Foreground(fgMuted).
-			MarginTop(1)
+		Foreground(fgMuted).
+		MarginTop(1)
 
-	// Cursor indicator
 	cursorStyle = lipgloss.NewStyle().
-			Foreground(brightYellow).
-			Bold(true)
+		Foreground(accentPrimary).
+		Bold(true)
 
-	// Error messages
 	errorStyle = lipgloss.NewStyle().
-			Foreground(red).
-			Bold(true)
-)
+		Foreground(errorCol).
+		Bold(true)
+}
 
-func getPriorityStyle(priority string) lipgloss.Style {
+func GetPriorityStyle(priority string) lipgloss.Style {
 	switch priority {
 	case "High":
 		return highPriorityStyle

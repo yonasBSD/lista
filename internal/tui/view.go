@@ -82,7 +82,7 @@ func (m model) renderTodoLine(i int, todo models.Todo) string {
 	}
 
 	content := fmt.Sprintf("%s %s [%s] %s", checkbox, todo.Title, todo.Priority, noteIndicator)
-	priorityBadge := getPriorityStyle(todo.Priority.String()).Render(fmt.Sprintf("[%s]", todo.Priority))
+	priorityBadge := GetPriorityStyle(todo.Priority.String()).Render(fmt.Sprintf("[%s]", todo.Priority))
 	todoTitle := todo.Title
 
 	// Determine style
@@ -179,7 +179,7 @@ func (m model) renderAddForm() string {
 			if m.focusedField == fieldPriority {
 				style = selectedStyle
 			} else {
-				style = itemStyle.Foreground(brightYellow)
+				style = itemStyle.Foreground(fgMain)
 			}
 		} else {
 			style = itemStyle.Foreground(fgMuted)
@@ -252,7 +252,7 @@ func (m model) renderEditForm() string {
 			if m.focusedField == fieldPriority {
 				style = selectedStyle
 			} else {
-				style = itemStyle.Foreground(brightYellow)
+				style = itemStyle.Foreground(fgMain)
 			}
 		} else {
 			style = itemStyle.Foreground(fgMuted)
